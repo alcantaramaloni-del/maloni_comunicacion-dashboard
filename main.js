@@ -14,11 +14,17 @@ let state = {
 };
 
 // ─── Init ─────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async () => {
+async function initApp() {
   await loadData();
   render();
   bindTopEvents();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 // ─── Data persistence ──────────────────────────────────────
 async function loadData() {
