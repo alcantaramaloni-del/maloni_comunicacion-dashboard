@@ -1,6 +1,6 @@
-# ETED Dashboard – Comunicaciones de Proyectos
+# Dashboard – Comunicaciones de Proyectos
 
-**Ing. Maloni Alcantara Jimenez · ETED · 2026**
+**Ing. Maloni Alcantara Jimenez · 2026**
 
 Dashboard de seguimiento de comunicaciones para proyectos de alta tensión. Desplegado como sitio estático en **GitHub Pages** — sin backend, sin base de datos, sin costos de servidor.
 
@@ -43,11 +43,11 @@ El acceso al dashboard está protegido por un sistema de login client-side que i
 
 | Usuario | Contraseña | Rol |
 |---------|-----------|-----|
-| `admin` | `Admin1234!` | 👑 Admin |
-| `maloni` | `Admin1234!` | ✏️ Editor |
-| `viewer` | `Viewer2026!` | 👁 Viewer |
+| `admin` | 
+| `maloni` |
+| `viewer` |
 
-**Clave maestra de administrador:** `ETED@AdminKey2026!`
+**Clave maestra de administrador:**
 
 > 🔴 **Cambie todas las contraseñas antes de desplegar en producción.**
 
@@ -105,14 +105,14 @@ Coloque todos los archivos en la raíz del repositorio (o en la carpeta `/docs`)
 1. Abra `index.html` localmente en su navegador.
 2. Inicie sesión como `admin` con la contraseña por defecto.
 3. Haga clic en su avatar → **Panel de administración**.
-4. Ingrese la clave maestra: `ETED@AdminKey2026!`
+4. Ingrese la clave maestra: 
 5. Edite cada usuario y establezca contraseñas seguras.
 6. Exporte el nuevo `users.json` y reemplácelo en el repositorio.
 7. Cambie también la clave maestra (ver sección siguiente).
 
 ### Paso 3 — Cambiar la clave maestra de administrador
 
-La clave maestra está almacenada como hash SHA-256 en `users.json` (`adminKeyHash`). Para cambiarla:
+La clave maestra está almacenada como hash SHA-256 en . Para cambiarla:
 
 **Opción A — Desde la consola del navegador:**
 ```javascript
