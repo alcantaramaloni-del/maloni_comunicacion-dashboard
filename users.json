@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "_readme": "Contraseñas hasheadas con SHA-256. NO almacenar contraseñas en texto plano.",
+  "adminKeyHash": "eaebcd45b610ae3808671c9ac3565554d68fe2a031c525a4cd92c04bdc928028",
+  "users": [
+    {
+      "id": "user-001",
+      "username": "admin",
+      "passwordHash": "5ce41ada64f1e8ffb0acfaafa622b141438f3a5777785e7f0b830fb73e40d3d6",
+      "nombre": "Administrador ETED",
+      "rol": "admin",
+      "activo": true,
+      "creado": "2026-03-19"
+    },
+    {
+      "id": "user-002",
+      "username": "maloni",
+      "passwordHash": "5ce41ada64f1e8ffb0acfaafa622b141438f3a5777785e7f0b830fb73e40d3d6",
+      "nombre": "Ing. Maloni Alcantara",
+      "rol": "editor",
+      "activo": true,
+      "creado": "2026-03-19"
+    },
+    {
+      "id": "user-003",
+      "username": "viewer",
+      "passwordHash": "4d0b5173e73f59585bee6931a1bcb0e8af65125a523f1cfcff8021c0519d6fc1",
+      "nombre": "Visitante",
+      "rol": "viewer",
+      "activo": true,
+      "creado": "2026-03-19"
+    }
+  ]
+}

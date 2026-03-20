@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ing. Maloni Alcantara – Comunicaciones</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ===== TOPBAR ===== -->
+  <div id="topbar">
+    <div class="logo">Ing. Maloni Alcantara Jimenez <span>/ Comunicaciones</span></div>
+    <button id="project-selector" title="Cambiar proyecto">📁 Cargando…</button>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-actions">
+      <button class="btn" id="btn-import" title="Importar JSON">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M8 2v8M4 6l4 4 4-4M2 12h12" />
+        </svg>
+        Importar
+      </button>
+      <button class="btn" id="btn-export" title="Exportar JSON">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M8 10V2M4 6l4-4 4 4M2 12h12" />
+        </svg>
+        Exportar
+      </button>
+      <button class="btn" id="btn-reset" title="Restaurar desde data.json" style="color:var(--text3)">↺ Reset</button>
+    </div>
+  </div>
+
+  <!-- ===== NAV TABS ===== -->
+  <div id="nav-tabs">
+    <button class="tab-btn active" data-view="lista">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="1" y="3" width="14" height="2" rx="1" />
+        <rect x="1" y="7" width="14" height="2" rx="1" />
+        <rect x="1" y="11" width="10" height="2" rx="1" />
+      </svg>
+      Lista
+    </button>
+    <button class="tab-btn" data-view="gantt">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="1" y="4" width="8" height="2" rx="1" />
+        <rect x="5" y="8" width="7" height="2" rx="1" />
+        <rect x="2" y="12" width="10" height="2" rx="1" />
+        <line x1="15" y1="2" x2="15" y2="14" />
+      </svg>
+      Timeline / Gantt
+    </button>
+    <button class="tab-btn" data-view="proyectos">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="1" y="1" width="6" height="6" rx="1.5" />
+        <rect x="9" y="1" width="6" height="6" rx="1.5" />
+        <rect x="1" y="9" width="6" height="6" rx="1.5" />
+        <rect x="9" y="9" width="6" height="6" rx="1.5" />
+      </svg>
+      Proyectos
+    </button>
+  </div>
+
+  <!-- ===== MAIN ===== -->
+  <div id="main">
+
+    <!-- STATS ROW -->
+    <div id="stats-row">
+      <div class="stat-card">
+        <div class="label">Total</div>
+        <div class="value" id="stat-total">0</div>
+        <div class="sub">comunicaciones</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="label" id="label-stat-local">ETED envió</div>
+        <div class="value" id="stat-eted">0</div>
+        <div class="sub">mensajes</div>
+      </div>
+      <div class="stat-card teal">
+        <div class="label" id="label-stat-contratista">KEPCO envió</div>
+        <div class="value" id="stat-kepco">0</div>
+        <div class="sub">mensajes</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Digital</div>
+        <div class="value" id="stat-digital">0</div>
+        <div class="sub">correos</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Físico</div>
+        <div class="value" id="stat-fisico">0</div>
+        <div class="sub">documentos</div>
+      </div>
+      <div class="stat-card warn">
+        <div class="label">⚠ Alertas</div>
+        <div class="value" id="stat-alerta">0</div>
+        <div class="sub">días excedidos</div>
+      </div>
+    </div>
+
+    <!-- ===== VIEW: LISTA ===== -->
+    <div id="view-lista" class="view-panel active">
+
+      <!-- Filter bar -->
+      <div id="filter-bar">
+        <label>Buscar:</label>
+        <input type="text" id="f-texto" placeholder="Descripción, documento, correlativo…" />
+
+        <label>Actor:</label>
+        <select id="f-interaccion">
+          <option value="">Todos</option>
+          <option value="ETED" id="f-opt-local">ETED</option>
+          <option value="KEPCO" id="f-opt-contratista">KEPCO</option>
+        </select>
+
+        <label>Canal:</label>
+        <select id="f-canal">
+          <option value="">Todos</option>
+          <option value="digital">Digital</option>
+          <option value="fisico">Físico</option>
+        </select>
+
+        <label>Tipo:</label>
+        <select id="f-tipo">
+          <option value="">Todos</option>
+          <option value="Técnica">Técnica</option>
+          <option value="Requerimiento">Requerimiento</option>
+          <option value="Respuesta">Respuesta</option>
+          <option value="Seguimiento">Seguimiento</option>
+          <option value="Instrucción">Instrucción</option>
+          <option value="Entrega física">Entrega física</option>
+          <option value="Aclaración">Aclaración</option>
+          <option value="Solicitud">Solicitud</option>
+        </select>
+
+        <label>Estado:</label>
+        <select id="f-estado">
+          <option value="">Todos</option>
+          <option value="enviado">Enviado</option>
+          <option value="recibido">Recibido</option>
+          <option value="pendiente-respuesta">Pendiente respuesta</option>
+        </select>
+
+        <div class="filter-spacer"></div>
+        <button class="btn btn-sm" id="btn-export-txt" title="Exportar Lista a TXT">📄 Exportar TXT</button>
+        <button class="btn btn-sm" id="btn-clear-filters">✕ Limpiar</button>
+        <button class="btn btn-sm btn-primary" id="btn-new-comm">+ Nueva comunicación</button>
+      </div>
+
+      <!-- Table -->
+      <div id="table-wrap" class="scroll-x">
+        <table id="comms-table">
+          <colgroup>
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+          </colgroup>
+          <thead>
+            <tr>
+              <th data-sort="correlativo"># <span class="sort-icon">↕</span></th>
+              <th data-sort="fecha">Fecha <span class="sort-icon">↕</span></th>
+              <th data-sort="interaccion">Actor <span class="sort-icon">↕</span></th>
+              <th data-sort="canal">Canal <span class="sort-icon">↕</span></th>
+              <th>Descripción</th>
+              <th data-sort="tipoInformacion">Tipo <span class="sort-icon">↕</span></th>
+              <th>Documento</th>
+              <th data-sort="diasLaborables" style="text-align:center">Días ↕</th>
+              <th data-sort="fechaFinal">Fecha Final <span class="sort-icon">↕</span></th>
+              <th data-sort="estatus">Estatus <span class="sort-icon">↕</span></th>
+              <th>Nota</th>
+              <th style="width:110px;min-width:110px">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="comms-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== VIEW: GANTT ===== -->
+    <div id="view-gantt" class="view-panel">
+      <div id="timeline-wrap">
+        <div id="timeline-header">
+          <h3>📅 Timeline de comunicaciones</h3>
+          <div id="timeline-controls">
+            <select id="gantt-scale-sel" class="btn">
+              <option value="month">Escala: Mensual</option>
+              <option value="week">Escala: Semanal</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Column visibility panel -->
+        <div id="gantt-col-panel"></div>
+
+        <div id="gantt-container">
+          <div id="gantt-svg-wrap"></div>
+        </div>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#1d4ed8"></div> <span id="legend-local">ETED (envia)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#0f766e"></div> <span id="legend-contratista">KEPCO (envia)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#f0fdf4;border:1px solid #16a34a"></div> Días OK
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#fef2f2;border:1px solid #dc2626"></div> Días excedidos
+          </div>
+          <div class="legend-item" style="gap:6px">
+            <div style="width:24px;height:3px;background:#1d4ed8;border-radius:2px;opacity:.8"></div> Hoy
+          </div>
+          <div class="legend-item" style="font-size:11px;color:var(--text3);margin-left:auto">
+            💡 Clic en encabezado de columna para ocultarla · Clic en fila para editar
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== VIEW: PROYECTOS ===== -->
+    <div id="view-proyectos" class="view-panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <h2 style="font-size:16px;font-weight:600">Proyectos guardados</h2>
+        <button class="btn btn-primary" id="btn-new-project">+ Nuevo proyecto</button>
+      </div>
+      <div id="projects-list"></div>
+    </div>
+
+  </div><!-- /main -->
+
+  <!-- ===== MODAL: COMUNICACIÓN ===== -->
+  <div id="comm-modal" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-title">Nueva comunicación</h2>
+        <button class="btn btn-sm" id="modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <span class="section-title">Identificación</span>
+          <div class="form-group">
+            <label>Correlativo</label>
+            <input type="text" id="m-correlativo" placeholder="Ej: C-025" />
+          </div>
+          <div class="form-group">
+            <label>Estado</label>
+            <select id="m-estado">
+              <option value="recibido">Recibido</option>
+              <option value="enviado">Enviado</option>
+              <option value="pendiente-respuesta">Pendiente respuesta</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fecha</label>
+            <input type="date" id="m-fecha" />
+          </div>
+          <div class="form-group">
+            <label>Hora (opcional)</label>
+            <input type="time" id="m-hora" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="section-title">Origen y canal</span>
+          <div class="form-group">
+            <label>Actor / Interacción</label>
+            <select id="m-interaccion">
+              <option value="ETED" id="m-opt-local">ETED (nosotros enviamos)</option>
+              <option value="KEPCO" id="m-opt-contratista">KEPCO (contratista envía)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Canal</label>
+            <select id="m-canal">
+              <option value="digital">✉ Digital (correo electrónico)</option>
+              <option value="fisico">📄 Físico (impreso)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tipo de información</label>
+            <input type="text" id="m-tipo" placeholder="Técnica, Requerimiento, Respuesta…" list="tipos-list" />
+            <datalist id="tipos-list">
+              <option value="Técnica" />
+              <option value="Requerimiento" />
+              <option value="Respuesta" />
+              <option value="Seguimiento" />
+              <option value="Instrucción" />
+              <option value="Entrega física" />
+              <option value="Aclaración" />
+              <option value="Solicitud" />
+            </datalist>
+          </div>
+          <div class="form-group">
+            <label>Fecha Final</label>
+            <input type="date" id="m-fechafinal" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="section-title">Contenido</span>
+          <div class="form-group full">
+            <label>Descripción / Comentario</label>
+            <textarea id="m-descripcion" rows="3" placeholder="Descripción del mensaje o comunicación…"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Documento(s) adjunto(s)</label>
+            <input type="text" id="m-documento" placeholder="Nombre del archivo o referencia del documento físico" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="section-title">Control de tiempos</span>
+          <div class="form-group">
+            <label>Días laborables transcurridos <span style="font-size:10px;color:var(--text3);font-weight:400">(calculado automáticamente)</span></label>
+            <div id="dias-preview" class="dias-preview" style="min-height:34px;display:flex;align-items:center;padding:6px 10px;border-radius:6px;font-weight:500;font-size:13px">
+              Sin fechas para calcular
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Estatus</label>
+            <select id="m-estatus">
+              <option value="No iniciado" selected>No iniciado</option>
+              <option value="En curso">En curso</option>
+              <option value="Retrasado">Retrasado</option>
+              <option value="Por sellar">Por sellar</option>
+              <option value="Completado">Completado</option>
+              <option value="Sellado">Sellado</option>
+              <option value="Por despachar">Por despachar</option>
+              <option value="Despachado">Despachado</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Nota interna</label>
+            <textarea id="m-nota" rows="2" placeholder="Observaciones internas…"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" id="modal-cancel">Cancelar</button>
+        <button class="btn btn-primary" id="modal-save">💾 Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: PROYECTO ===== -->
+  <div id="project-modal" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Configuración del proyecto</h2>
+        <button class="btn btn-sm" id="pm-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="pm-id" />
+        <div class="form-row">
+          <span class="section-title">Datos del proyecto</span>
+          <div class="form-group full">
+            <label>Nombre del proyecto *</label>
+            <input type="text" id="pm-nombre" placeholder="Ej: LSAT 138 kV – SE Centro de Operaciones" />
+          </div>
+          <div class="form-group full">
+            <label>Descripción</label>
+            <textarea id="pm-desc" rows="2" placeholder="Descripción general…"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Fecha de inicio</label>
+            <input type="date" id="pm-inicio" />
+          </div>
+          <div class="form-group">
+            <label>⚠ Umbral de días laborables</label>
+            <input type="number" id="pm-umbral" min="1" value="5" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="section-title">Entidades (Emisores/Receptores)</span>
+          <div class="form-group">
+            <label>Entidad Local (Nosotros)</label>
+            <input type="text" id="pm-entidad-local" placeholder="Ej: ETED" />
+          </div>
+          <div class="form-group">
+            <label>Contratista (Ellos)</label>
+            <input type="text" id="pm-contratista" placeholder="Ej: KEPCO" />
+          </div>
+          <div class="form-group">
+            <label>RNC / Identificación (Contratista)</label>
+            <input type="text" id="pm-rnc" placeholder="Ej: 1-01-12345-6" />
+          </div>
+          <div class="form-group">
+            <label>Correo electrónico</label>
+            <input type="email" id="pm-correo" placeholder="contacto@empresa.com" />
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="tel" id="pm-tel" placeholder="+1 (809) 000-0000" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" id="pm-cancel">Cancelar</button>
+        <button class="btn btn-primary" id="pm-save">💾 Guardar proyecto</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast-container"></div>
+
+  <!-- auth.js gestiona el login y carga main.js dinámicamente tras autenticación -->
+  <script src="auth.js"></script>
+</body>
+
+</html>
